@@ -22,7 +22,7 @@ const OutputSection = ({aiOutput}:props) => {
       </div>
       <Editor
       ref={editorRef}
-      initialValue="Your result will appear here."
+      // initialValue="Your result will appear here."
      
       height='600px'
       initalEditType="wysiwyg"
