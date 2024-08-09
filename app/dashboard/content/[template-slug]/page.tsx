@@ -39,17 +39,28 @@ const CreateNewContent = (props: PROPS) => {
     setLoading(false);
   }
 
-  const SaveInDb=async(formData:any, slug:any, aiResp:string)=>{
-    const result=await db.insert(AIOutput).values({
-      formData:formData,
-      templateSlug:slug,
-      aiResponse:aiResp,
-      createdBy:user?.primaryEmailAddress?.emailAddress,
-      createdAt:moment().format('DD/MM/yyyy'),
-    })
-
+  const SaveInDb = async (formData: string, slug: string | undefined, aiResp: string | undefined) => {
+    if (!slug) {
+      throw new Error("Template slug is undefined");
+    }
+    if (!aiResp) {
+      throw new Error("AI Response is undefined");
+    }
+    if (!user?.primaryEmailAddress?.emailAddress) {
+      throw new Error("User email is undefined");
+    }
+  
+    const result = await db.insert(AIOutput).values({
+      formData: formData,
+      templateSlug: slug,
+      aiResponse: aiResp,
+      createdBy: user.primaryEmailAddress.emailAddress,
+      createdAt: moment().format('DD/MM/yyyy'),  // Ensure createdAt is in the correct format as expected by the database
+    });
+  
     console.log(result);
-  }
+  };
+  
   return (
     <div className='p-10'>
       <Link href={"/dashboard"}>
